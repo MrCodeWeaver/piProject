@@ -10,12 +10,22 @@ using var controller = new GpioController();
 controller.OpenPin(upPin, PinMode.Output);
 controller.OpenPin(downPin, PinMode.Output);
 
-while (true)
+try
 {
-    TogglePinOnFor(upPin, sleepTime);
-    Thread.Sleep(sleepTime);
-    TogglePinOnFor(downPin, sleepTime);
-    Thread.Sleep(sleepTime);
+    while (true)
+    {
+        TogglePinOnFor(upPin, sleepTime);
+        Thread.Sleep(sleepTime);
+        TogglePinOnFor(downPin, sleepTime);
+        Thread.Sleep(sleepTime);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+    Console.WriteLine("Setting both pins to low and exiting.");
+    controller.Write(upPin, PinValue.High);
+    controller.Write(downPin, PinValue.High);
 }
 
 void TogglePinOnFor(int pin, int milliseconds)
@@ -24,11 +34,11 @@ void TogglePinOnFor(int pin, int milliseconds)
     {
         return;
     }
-    
+
     Console.WriteLine($"Setting pin {pin} to high");
-    controller.Write(pin, PinValue.High);
+    controller.Write(pin, PinValue.Low);
     Console.WriteLine($"Sleeping for {milliseconds} milliseconds");
     Thread.Sleep(milliseconds);
     Console.WriteLine($"Setting pin {pin} to low");
-    controller.Write(pin, PinValue.Low);
+    controller.Write(pin, PinValue.High);
 }
