@@ -35,10 +35,10 @@ void TogglePinOnFor(int pin, int milliseconds)
         return;
     }
 
-    Console.WriteLine($"Setting pin {pin} to high");
+    Console.WriteLine($"Setting pin {pin} to low");
     controller.Write(pin, PinValue.Low);
     Console.WriteLine($"Sleeping for {milliseconds} milliseconds");
     Thread.Sleep(milliseconds);
-    Console.WriteLine($"Setting pin {pin} to low");
+    Console.WriteLine($"Setting pin {pin} to high");
     controller.Write(pin, PinValue.High);
 }
